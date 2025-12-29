@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 
 import net.javaguides.sms.dto.StudentDto;
@@ -46,5 +47,35 @@ public class StudentController {
     public  ResponseEntity<String> deleteStudent(@PathVariable("id") Long studentId) {
         studentService.deleteStudent(studentId);
         return ResponseEntity.ok("Student deleted successfully!");
+    }
+
+    @GetMapping("/class/{className}")
+    public ResponseEntity<List<StudentDto>> getStudentsByClass(@PathVariable("className") String className) {
+        List<StudentDto> students = studentService.getStudentsByClassName(className);
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/{id}/score")
+    public ResponseEntity<Double> getStudentScore(@PathVariable("id") Long studentId) {
+        Double score = studentService.getStudentScore(studentId);
+        return ResponseEntity.ok(score);
+    }
+
+    @GetMapping("/score-above")
+    public ResponseEntity<List<StudentDto>> getStudentsWithScoreAbove(@RequestParam("min") Double min) {
+        List<StudentDto> students = studentService.getStudentsWithScoreGreaterThan(min);
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/age-counts")
+    public ResponseEntity<Map<Integer, Long>> getAgeCounts() {
+        Map<Integer, Long> counts = studentService.getAgeCounts();
+        return ResponseEntity.ok(counts);
+    }
+
+    @GetMapping("/sex-counts")
+    public ResponseEntity<Map<String, Long>> getSexCounts() {
+        Map<String, Long> counts = studentService.getSexCounts();
+        return ResponseEntity.ok(counts);
     }
 }
