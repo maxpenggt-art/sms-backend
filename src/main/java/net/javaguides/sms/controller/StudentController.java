@@ -25,7 +25,7 @@ public class StudentController {
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id:\\d+}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") Long studentId) {
         StudentDto studentDto = studentService.getStudentById(studentId);
         return ResponseEntity.ok(studentDto);
@@ -37,13 +37,13 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id:\\d+}")
     public  ResponseEntity<StudentDto> updateStudent(@PathVariable("id") Long studentId, @RequestBody StudentDto updatedStudent) {
         StudentDto studentDto = studentService.updateStudent(studentId, updatedStudent);
         return ResponseEntity.ok(studentDto);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id:\\d+}")
     public  ResponseEntity<String> deleteStudent(@PathVariable("id") Long studentId) {
         studentService.deleteStudent(studentId);
         return ResponseEntity.ok("Student deleted successfully!");
@@ -55,7 +55,7 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/{id}/score")
+    @GetMapping("/{id:\\d+}/score")
     public ResponseEntity<Double> getStudentScore(@PathVariable("id") Long studentId) {
         Double score = studentService.getStudentScore(studentId);
         return ResponseEntity.ok(score);
