@@ -42,6 +42,19 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<StudentDto> getStudentsByClassName(String className) {
+        List<Student> students = studentRepository.findByClassName(className);
+        return students.stream().map(StudentMapper::mapToStudentDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Double getStudentScore(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student is not exist with given id: " + studentId));
+        return student.getScore();
+    }
+
+    @Override
     public StudentDto updateStudent(Long studentId, StudentDto updatedStudentDto) {
         Student student = studentRepository.findById(studentId).orElseThrow(
                 () -> new ResourceNotFoundException("Student is not exist with given id: " + studentId)
@@ -50,6 +63,18 @@ public class StudentServiceImpl implements StudentService {
         student.setFirstName(updatedStudentDto.getFirstName());
         student.setLastName(updatedStudentDto.getLastName());
         student.setEmail(updatedStudentDto.getEmail());
+        // map sex string to enum safely
+        if (updatedStudentDto.getSex() != null) {
+            String s = updatedStudentDto.getSex().trim().toUpperCase();
+            if (s.equals("MALE") || s.equals("M")) student.setSex(net.javaguides.sms.entity.Sex.MALE);
+            else if (s.equals("FEMALE") || s.equals("F")) student.setSex(net.javaguides.sms.entity.Sex.FEMALE);
+            else student.setSex(null);
+        } else {
+            student.setSex(null);
+        }
+        student.setScore(updatedStudentDto.getScore());
+        student.setAge(updatedStudentDto.getAge());
+        student.setClassName(updatedStudentDto.getClassName());
 
         Student updatedStudent = studentRepository.save(student);
 
@@ -63,5 +88,38 @@ public class StudentServiceImpl implements StudentService {
         );
 
         studentRepository.deleteById(studentId);
+    }
+
+    @Override
+    public List<StudentDto> getStudentsWithScoreGreaterThan(Double minScore) {
+        List<Student> students = studentRepository.findByScoreGreaterThan(minScore);
+        return students.stream().map(StudentMapper::mapToStudentDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public java.util.Map<Integer, Long> getAgeCounts() {
+        java.util.Map<Integer, Long> result = new java.util.HashMap<>();
+        List<Object[]> rows = studentRepository.countByAgeGroup();
+        for (Object[] row : rows) {
+            Integer age = (Integer) row[0];
+            Long count = (Long) row[1];
+            if (age != null) {
+                result.put(age, count);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public java.util.Map<String, Long> getSexCounts() {
+        java.util.Map<String, Long> result = new java.util.HashMap<>();
+        List<Object[]> rows = studentRepository.countBySexGroup();
+        for (Object[] row : rows) {
+            net.javaguides.sms.entity.Sex sex = (net.javaguides.sms.entity.Sex) row[0];
+            Long count = (Long) row[1];
+            String key = sex == null ? "UNKNOWN" : sex.name();
+            result.put(key, count);
+        }
+        return result;
     }
 }

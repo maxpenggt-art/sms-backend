@@ -31,8 +31,8 @@ class StudentServiceTest {
 
     @Test
     void getAllStudents_returnsMappedList() {
-        Student s1 = new Student(1L, "A", "B", "a.b@example.com");
-        Student s2 = new Student(2L, "C", "D", "c.d@example.com");
+        Student s1 = new Student(1L, "A", "B", "a.b@example.com", null, null, null, null);
+        Student s2 = new Student(2L, "C", "D", "c.d@example.com", null, null, null, null);
         when(studentRepository.findAll()).thenReturn(List.of(s1, s2));
 
         var dtos = studentService.getAllStudents();
@@ -43,7 +43,7 @@ class StudentServiceTest {
 
     @Test
     void getStudentById_returnsOptionalDto() {
-        Student s = new Student(5L, "First", "Last", "f.l@example.com");
+        Student s = new Student(5L, "First", "Last", "f.l@example.com", null, null, null, null);
         when(studentRepository.findById(5L)).thenReturn(Optional.of(s));
 
         var dto = studentService.getStudentById(5L);

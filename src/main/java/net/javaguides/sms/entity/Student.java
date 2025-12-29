@@ -26,4 +26,18 @@ public class Student {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sex", nullable = true)
+    private Sex sex;
+
+    @Column(name = "score")
+    private Double score;
+
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "class")
+    private String className;
+
 }
