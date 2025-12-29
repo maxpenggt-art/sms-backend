@@ -1,4 +1,4 @@
-package net.javaguides.ems.entity;
+package net.javaguides.sms.entity;
 
 import jakarta.persistence.*; // This covers Entity, Table, Id, Column, etc.
 import lombok.AllArgsConstructor;
@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "employees")
-public class Employee {
+@Table(name = "students")
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,6 @@ public class Employee {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email_id, nullable = false, unique = true")
+    @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 }

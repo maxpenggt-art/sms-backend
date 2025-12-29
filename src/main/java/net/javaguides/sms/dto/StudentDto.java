@@ -1,4 +1,4 @@
-package net.javaguides.ems.dto;
+package net.javaguides.sms.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeDto {
+public class StudentDto {
     private Long id;
     private String firstName;
     private String lastName;
